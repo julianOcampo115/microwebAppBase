@@ -25,6 +25,15 @@ cd /home/vagrant/microUsers
 export FLASK_APP=run.py
 /usr/local/bin/flask run --host=0.0.0.0 --port 5002
 ```
+
+## Run the Products Microservice
+
+```
+cd /home/vagrant/microProducts
+export FLASK_APP=run.py
+/usr/local/bin/flask run --host=0.0.0.0 --port 5003
+```
+
 ## Connect consul with microservices
 
 ```
