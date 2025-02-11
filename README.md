@@ -1,6 +1,6 @@
 # microwebAppBase
 
-Repositorio donde se encontrará una aplicación web con su respectiva API, tanto con frontend como backend para luego monitorearlos en consul
+Repository where you will find a web application with its respective API, both with frontend and backend to then monitor them in Consul
 
 # To Run application
 
@@ -50,4 +50,13 @@ Vagrant.configure("2") do |config|
 end
 
 There are 2 machines but in this case we'll use just the "servidor" machine
+
+
+Before power on the "servidor" machine with vagrant up, we must enable the consul service with:
+```
+consul agent -ui -dev -bind=192.168.50.3 -client=0.0.0.0 -data-dir=.
+
+```
+The consul service will running in http://192.168.50.3:8500
+
 ```
