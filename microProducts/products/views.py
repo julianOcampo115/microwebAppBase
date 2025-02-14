@@ -2,7 +2,7 @@ from flask import Flask, render_template
 #from users.controllers.user_controller import user_controller
 from db.db import db
 from flask_cors import CORS
-from users.controllers.product_controller import product_controller
+from products.controllers.product_controller import product_controller
 
 app = Flask(__name__)
 CORS(app)
