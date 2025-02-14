@@ -1,5 +1,5 @@
 function getProducts() {
-    fetch('http://192.168.80.3:5002/api/products')
+    fetch('http://192.168.80.3:5003/api/products')
         .then(response => response.json())
         .then(data => {
             // Handle data
@@ -69,7 +69,7 @@ function createProduct() {
         bag: document.getElementById('bag').value
     };
 
-    fetch('http://192.168.80.3:5002/api/products', {
+    fetch('http://192.168.80.3:5003/api/products', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ function updateProduct() {
         bag: document.getElementById('bag').value
     };
 
-    fetch(`http://192.168.80.3:5002/api/products/${productNum}`, {
+    fetch(`http://192.168.80.3:5003/api/products/${productNum}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ function updateProduct() {
 function deleteProduct(productNum) {
     console.log('Deleting product with Num:', productNum);
     if (confirm('Are you sure you want to delete this product?')) {
-        fetch(`http://192.168.80.3:5002/api/products/${productNum}`, {
+        fetch(`http://192.168.80.3:5003/api/products/${productNum}`, {
             method: 'DELETE',
         })
         .then(response => {
