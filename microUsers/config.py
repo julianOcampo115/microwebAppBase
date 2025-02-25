@@ -7,7 +7,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-
+# If you're going to use the docker compose for packing the API REST APP, change this file for:
 
 
 class Config:
