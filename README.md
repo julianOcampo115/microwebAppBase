@@ -136,3 +136,15 @@ app.run(host="0.0.0.0", port=5001, debug=True)
 ```
 To run the app.py: 
 python3 app.py
+
+## Run whit Docker Compose
+
+```
+locate the docker-compose.yml then
+
+sudo docker compose up -d --build
+sudo docker ps to see them running
+
+```
+
+
