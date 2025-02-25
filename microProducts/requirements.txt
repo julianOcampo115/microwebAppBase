@@ -1,0 +1,7 @@
+Flask
+mysql-connector
+Flask-SQLAlchemy
+mysqlclient
+Flask-Cors
+requests
+pymysql
