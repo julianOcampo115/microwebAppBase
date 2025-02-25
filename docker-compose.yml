@@ -1,0 +1,67 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: db_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myflaskapp
+        # MYSQL_USER: root
+        #MYSQL_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "32000:3306"
+
+  micro_users:
+    build: ./microUsers
+    container_name: micro_users_container
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: myflaskapp
+
+    depends_on:
+      - db
+    ports:
+      - "5002:5002"
+    command: ["python", "run.py"]
+
+  micro_products:
+    build: ./microProducts
+    container_name: micro_products_container
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: myflaskapp
+
+    depends_on:
+      - db
+    ports:
+      - "5003:5003"
+    command: ["python", "run.py"]
+
+  frontend:
+    build: ./frontend
+    container_name: frontend_container
+    restart: always
+    environment:
+      API_USERS_URL: http://micro_users:5002
+      API_PRODUCTS_URL: http://micro_products:5003
+
+    depends_on:
+      - micro_users
+      - micro_products
+    ports:
+      - "5001:5001"
+    command: ["python", "run.py"]
+
+volumes:
+  db_data: {}
