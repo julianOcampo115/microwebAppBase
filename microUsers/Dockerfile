@@ -13,7 +13,7 @@ COPY requirements.txt /app
 RUN pip install -r requirements.txt
 
 # Expone el puerto en el que correrá el frontend
-EXPOSE 5001
+EXPOSE 5002
 
 # Comando de inicio
 CMD ["python", "run.py"]
