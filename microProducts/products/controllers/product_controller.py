@@ -34,10 +34,24 @@ def update_product(product_code):
     print("actualizando producto")
     product = Products.query.get_or_404(product_code)
     data = request.json
-    product.name = data['name']
-    product.quantity = data['quantity']
-    product.cost = data['cost']
-    product.bag = data['bag']
+    #########################
+    # Actualizar solo los campos presentes en el JSON
+    if 'quantity' in data:
+        product.quantity = data['quantity']
+    if 'cost' in data:
+        product.cost = data['cost']
+    if 'bag' in data:
+        product.bag = data['bag']
+    # Solo actualiza el nombre si está presente (no obligatorio)
+    if 'name' in data:
+        product.name = data['name']
+
+######################################
+
+   # product.name = data['name']
+   # product.quantity = data['quantity']
+   # product.cost = data['cost']
+   # product.bag = data['bag']
     db.session.commit()
     return jsonify({'message': 'Product updated successfully'})
 
