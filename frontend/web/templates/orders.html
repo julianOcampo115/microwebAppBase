@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Órdenes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .container {
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Órdenes</h1>
+        <table id="orders-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Email de Usuario</th>
+                    <th>Total de Venta</th>
+                    <th>Fecha</th>
+                    <!--<th>Cant de productos</th>-->
+                 </tr>
+            </thead>
+
+            <tbody>
+                <!-- Las órdenes se insertarán aquí por JavaScript -->
+            </tbody>
+        </table>
+</div>
+
+
+<div style="text-align: center; margin-top: 20px;">
+    <button onclick="goBack()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Regresar</button>
+</div>
+
+<script>
+    function goBack() {
+        window.location.href = "/products"; // Redirige a la página de productos
+    }
+</script>
+
+<script>
+
+        // Hacer una solicitud GET a la API para obtener las órdenes
+
+    fetch('http://192.168.80.3:5004/api/orders')  // Asegúrate de usar la URL correcta
+        .then(response => response.json())
+        .then(orders => {
+            const tableBody = document.querySelector('#orders-table tbody');
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.userName}</td>
+                    <td>${order.userEmail}</td>
+                    <td>${order.saleTotal}</td>
+                    <td>${order.date}</td>
+                    <td>
+                        <button onclick="editOrder(${order.id})" class="btn btn-warning">Editar</button>
+                    </td>
+                 `;
+                 tableBody.appendChild(row);
+             });
+         })
+        .catch(error => console.error('Error al obtener las órdenes:', error));
+  // Redirigir a la página de edición con el ID de la orden
+    function editOrder(orderId) {
+        window.location.href = `/editOrder/${orderId}`;
+    }
+</script>
+</body>
+</html>
