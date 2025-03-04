@@ -1,5 +1,11 @@
 function getUsers() {
-    fetch('http://192.168.80.3:5002/api/users')
+    fetch('http://192.168.80.3:5002/api/users', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+    })
         .then(response => response.json())
         .then(data => {
             // Handle data
@@ -34,7 +40,7 @@ function getUsers() {
                 // Edit link
                 var editLink = document.createElement('a');
                 editLink.href = `/editUser/${user.id}`;
-	        //editLink.href = `edit.html?id=${user.id}`;
+                //editLink.href = `edit.html?id=${user.id}`;
                 editLink.textContent = 'Edit';
                 editLink.className = 'btn btn-primary mr-2';
                 actionsCell.appendChild(editLink);
@@ -146,4 +152,36 @@ function deleteUser(userId) {
             console.error('Error:', error);
         });
     }
+}
+
+function handleLogin(event) {
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  fetch('http://192.168.80.3:5002/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, password }),
+    credentials: 'include'
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+      return response.json();
+    })
+    .then(data=> {
+      // Store the token in local storage
+      localStorage.setItem('token', data.token);
+      // Redirect to the desired page after successful login
+      window.location.href = '/dashboard'; // Replace with your desired redirect URL
+    })
+    .catch(error => {
+      console.error('Login error:', error);
+      // Display an error message to the user
+      alert('Invalid credentials');
+    });
 }
