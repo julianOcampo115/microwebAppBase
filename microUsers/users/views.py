@@ -5,13 +5,17 @@ from flask_cors import CORS
 #from users.controllers.product_controller import product_controller
 
 app = Flask(__name__)
-CORS(app)
+app.secret_key = 'secret123'
+
+# Configurar CORS para permitir solicitudes desde el frontend (http://192.168.80.3:5001)
+CORS(app, resources={r"/api/*": {"origins": "http://192.168.80.3:5001"}}, supports_credentials=True)
+
 app.config.from_object('config.Config')
 db.init_app(app)
 
 
-with app.app_context():
-    db.create_all()
+#with app.app_context():
+#    db.create_all()
 
 
 # Registrando el blueprint del controlador de usuarios
