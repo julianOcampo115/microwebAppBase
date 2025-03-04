@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session, g
 from users.models.user_model import Users
 from db.db import db
+from datetime import timedelta
 
 user_controller = Blueprint('user_controller', __name__)
 
@@ -48,3 +49,26 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
     return jsonify({'message': 'User deleted successfully'})
+
+
+@user_controller.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    if not username or not password:
+        return jsonify({'message': 'Missing username or password'}),400
+    user = Users.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({'message': 'Invalid username or password'}), 401
+    #if not check_password_hash(user.password, password):
+    if user.password != password:
+        return jsonify({'message': 'Invalid username or password'}), 401
+    # Store user information in session
+    session['user_id'] = user.id
+    session['username'] = user.username
+    session['email'] = user.email  # Add other user information as needed
+    #g.user=user
+    #print(g.__dict__)
+    print("En session: ",session)
+    return jsonify({'message': 'Login successful'})
