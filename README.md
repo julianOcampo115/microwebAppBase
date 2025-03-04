@@ -1,4 +1,4 @@
-# microwebAppBase
+# microwebApp - API - Docker compose - Flask - Consul
 
 Repository where you will find a web application with its respective API, both with frontend and backend to then monitor them in Consul
 
@@ -32,6 +32,14 @@ export FLASK_APP=run.py
 cd /home/vagrant/microProducts
 export FLASK_APP=run.py
 /usr/local/bin/flask run --host=0.0.0.0 --port 5003
+```
+
+## Run the Orders Microservice
+
+```
+cd /home/vagrant/microOrders
+export FLASK_APP=run.py
+/usr/local/bin/flask run --host=0.0.0.0 --port 5004
 ```
 
 ## Connect consul with microservices
