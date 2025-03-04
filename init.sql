@@ -18,6 +18,14 @@ CREATE TABLE products (
     bag varchar(255)
 );
 
+CREATE TABLE orders (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    userName varchar(255),
+    userEmail varchar(255),
+    saleTotal decimal(10,2),
+    date datetime default current_timestamp);
+
+
 INSERT INTO users VALUES(null, "juan", "juan@gmail.com", "juan", "123"),
     (null, "maria", "maria@gmail.com", "maria", "456");
 
@@ -47,6 +55,14 @@ CREATE TABLE IF NOT EXISTS products (
     cost varchar(255),
     bag varchar(255)
 );
+
+CREATE TABLE IF NOT EXISTS orders (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    userName varchar(255),
+    userEmail varchar(255),
+    saleTotal decimal(10,2),
+    date datetime default current_timestamp);
+
 
 INSERT IGNORE INTO users VALUES
     (null, "juan", "juan@gmail.com", "juan", "123"),
