@@ -13,6 +13,11 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "32000:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
 
   micro_users:
     build: ./microUsers
@@ -26,7 +31,14 @@ services:
       DB_NAME: myflaskapp
 
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/healthcheck"]
+      interval: 5s
+      retries: 10
+      start_period: 15s
+
     ports:
       - "5002:5002"
     command: ["python", "run.py"]
@@ -48,17 +60,41 @@ services:
       - "5003:5003"
     command: ["python", "run.py"]
 
+
+  micro_orders:
+    build: ./microOrders
+    container_name: micro_orders_container
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: myflaskapp
+
+
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5004:5004"
+    command: ["python", "run.py"]
+
+
+
   frontend:
     build: ./frontend
     container_name: frontend_container
     restart: always
     environment:
-      API_USERS_URL: http://micro_users:5002
-      API_PRODUCTS_URL: http://micro_products:5003
+      API_USERS_URL: http://192.168.80.3:5002
+      API_PRODUCTS_URL: http://192.168.80.3:5003
+      API_ORDERS_URL: http://192.168.80.3:5004
 
     depends_on:
       - micro_users
       - micro_products
+      - micro_orders
     ports:
       - "5001:5001"
     command: ["python", "run.py"]
