@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Orden</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Editar Orden</h2>
+    <a href="/orders" class="btn btn-primary mb-3">Volver a Órdenes</a>
+    <form id="edit-order-form">
+        <input type="hidden" id="order-id">
+        <div class="form-group">
+            <label for="userName">Nombre de Usuario</label>
+            <input type="text" class="form-control" id="userName" required>
+        </div>
+        <div class="form-group">
+            <label for="userEmail">Email de Usuario</label>
+            <input type="email" class="form-control" id="userEmail" required>
+        </div>
+        <div class="form-group">
+            <label for="saleTotal">Total de Venta</label>
+            <input type="number" class="form-control" id="saleTotal" required>
+        </div>
+        <button type="button" class="btn btn-success" onclick="update_order()">Guardar Cambios</button>
+    </form>
+</div>
+
+<script>
+    // Obtener el ID de la orden de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+        const orderId = {{id}}
+
+    // Cargar la información de la orden
+    fetch(`http://192.168.80.3:5004/api/orders/${orderId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('order-id').value = data.id;
+            document.getElementById('userName').value = data.userName;
+            document.getElementById('userEmail').value = data.userEmail;
+            document.getElementById('saleTotal').value = data.saleTotal;
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Función para actualizar la orden usando onclick
+    function update_order() {
+        var orderNum = document.getElementById('order-id').value;
+        var updatedOrder = {
+            userName: document.getElementById('userName').value,
+            userEmail: document.getElementById('userEmail').value,
+            saleTotal: document.getElementById('saleTotal').value
+        };
+        fetch(`http://192.168.80.3:5004/api/orders/${orderNum}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedOrder),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta de la red');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(updatedOrder);
+            alert('Orden actualizada correctamente');
+            window.location.href = '/orders';  // Redirigir a la lista de órdenes
+        })
+        .catch(error => {
+            console.error('Error al actualizar la orden:', error);
+            alert('Hubo un error al actualizar la orden.');
+        });
+    }
+</script>
+
+
+
+</body>
+</html>
