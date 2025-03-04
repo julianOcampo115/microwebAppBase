@@ -132,6 +132,16 @@ consul.register_service(
     httpcheck='http://192.168.80.3:5003/healthcheck'
 )
 
+# Registrar BACKEND en Consul (MicroOrders)
+consul.register_service(
+    name='MicroOrders',
+    interval='10s',
+    tags=['BACKEND_2', 'API'],
+    address='192.168.80.3',  # IP del backend
+    port=5004,
+    httpcheck='http://192.168.80.3:5004/healthcheck'
+)
+
 app.run(host="0.0.0.0", port=5001, debug=True)
 ```
 To run the app.py: 
